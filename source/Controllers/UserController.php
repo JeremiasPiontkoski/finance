@@ -23,6 +23,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             echo json_encode($validator->getErrors());
         }
+        
 
         return null;
     }
