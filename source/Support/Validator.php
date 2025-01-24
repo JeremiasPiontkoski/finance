@@ -1,6 +1,9 @@
 <?php
 namespace Source\Support;
 
+use Source\Expections\ValidationException;
+use Source\Models\User;
+
 class Validator {
     private $data = [];
     private $errors = [];
@@ -16,7 +19,7 @@ class Validator {
 
     public function getErrors(): array
     {
-        return ['errors' => $this->errors];
+        return $this->errors;
     }
 
     public function fails(): bool
@@ -33,10 +36,19 @@ class Validator {
         return $this;
     }
 
-    public function email(string $field): self
+    public function email(): self
     {
-        if (!filter_var($this->data[$field] ?? '', FILTER_VALIDATE_EMAIL)) {
-            $this->addError($field, "{$field} deve ser um e-mail válido!");
+        if (!filter_var($this->data['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
+            $this->addError("email", "Email deve ser um e-mail válido!");
+        }
+
+        return $this;
+    }
+
+    public function uniqueEmail(int $id = null): self
+    {
+        if (!(new User())->isEmailUnique($this->data["email"] ?? '', $id)) {
+            $this->addError("email", "Email já está em uso!");
         }
 
         return $this;
@@ -58,5 +70,12 @@ class Validator {
         }
 
         return $this;
+    }
+
+    public function validate(): void
+    {
+        if (!empty($this->getErrors())) {
+            throw new ValidationException($this->errors);
+        }
     }
 }
