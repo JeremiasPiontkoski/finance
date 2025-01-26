@@ -1,4 +1,5 @@
 <?php
+
 namespace Source\Models;
 
 use CoffeeCode\DataLayer\DataLayer;
@@ -14,16 +15,8 @@ class Category extends DataLayer
 
     public function insert(array $data): self
     {
-        if ($this->existsByName($data['name'])) {
-            throw new CategoryException([
-                "name" => [
-                    "O nome {$data['name']} já está em uso!"
-                    ]
-            ], "Dados inválidos!");
-        }
-
-        $this->user_id = Auth::getData()->id;
-        $this->name = $data['name'];
+        $this->checkCategoryName($data['name']);
+        $this->setData($data);
 
         if (!$this->save()) {
             throw new CategoryException([
@@ -38,32 +31,11 @@ class Category extends DataLayer
 
     public function edit(array $data): self
     {
-        $category = $this->getById($data['id']);
-        if (empty($category)) {
-            throw new CategoryException([
-                "id" => [
-                    "Id inválido!"
-                ]
-            ], message: "Erro ao encontrar uma categoria!");   
-        }
+        $category = $this->checkCategoryExists($data['id']);
+        $this->checkCategoryName($data['name']);
+        $this->checkOwnerPermission($category);
 
-        if (!$this->isOwner($category)) {
-            throw new CategoryException([
-                "user" => "Este usuário não tem permissão para editar esta categoria!"
-            ], message: "Permissão negada!", code: 403);
-        }
-
-        if ($this->existsByName($data['name'])) {
-            throw new CategoryException([
-                "name" => [
-                    "O nome {$data['name']} já está em uso!"
-                    ]
-            ], "Dados inválidos!");
-        }
-
-        $this->id = $data['id'];
-        $this->user_id = Auth::getData()->id;
-        $this->name = $data['name'];
+        $this->setData($data);
         
         if (!$this->save()) {
             throw new CategoryException([
@@ -78,20 +50,8 @@ class Category extends DataLayer
 
     public function remove(int $id): bool
     {
-        $category = $this->getById($id);
-        if (empty($category)) {
-            throw new CategoryException([
-                "id" => [
-                    "Id inválido!"
-                ]
-            ], message: "Erro ao encontrar uma categoria!");   
-        }
-
-        if (!$this->isOwner($category)) {
-            throw new CategoryException([
-                "user" => "Este usuário não tem permissão para editar esta categoria!"
-            ], message: "Permissão negada!", code: 403);
-        }
+        $category = $this->checkCategoryExists($id);
+        $this->checkOwnerPermission($category);
 
         if (!$category->destroy()) {
             throw new CategoryException([
@@ -117,13 +77,47 @@ class Category extends DataLayer
 
     private function existsByName(string $name): bool
     {
-        $exists = $this->find("name = :name", "name={$name}")->count();
-
-        return $exists > 0;
+        return $this->find("name = :name", "name={$name}")->count() > 0;
     }
 
     private function isOwner(Category $category): bool
     {
         return $category->user_id == Auth::getData()->id;
+    }
+
+    private function checkCategoryExists(int $id): self
+    {
+        $category = $this->getById($id);
+        if (empty($category)) {
+            throw new CategoryException([
+                "id" => ["Id inválido!"]
+            ], message: "Erro ao encontrar uma categoria!");
+        }
+
+        return $category;
+    }
+
+    private function checkOwnerPermission(Category $category): void
+    {
+        if (!$this->isOwner($category)) {
+            throw new CategoryException([
+                "user" => "Este usuário não tem permissão para editar ou deletar esta categoria!"
+            ], message: "Permissão negada!", code: 403);
+        }
+    }
+
+    private function checkCategoryName(string $name): void
+    {
+        if ($this->existsByName($name)) {
+            throw new CategoryException([
+                "name" => ["O nome {$name} já está em uso!"]
+            ], "Dados inválidos!");
+        }
+    }
+
+    private function setData(array $data): void
+    {
+        $this->user_id = Auth::getData()->id;
+        $this->name = $data['name'];
     }
 }
