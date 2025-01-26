@@ -14,14 +14,13 @@ class UserController extends Controller
         parent::__construct();
     }
 
-    public function insert(array $data): void
+    public function insert(): void
     {
         try {
-            $data = $this->data;
-            $this->validateInsertFields($data);
+            $this->validateInsertFields($this->data);
 
             $user = new User();
-            if (empty($user->insert($data))) return;
+            if (empty($user->insert($this->data))) return;
 
             Response::success("Usuário criado com sucesso!", response: [
                 "id" => $user->id,
@@ -36,9 +35,9 @@ class UserController extends Controller
     }
 
 
-    private function validateInsertFields(array $data): void
+    private function validateInsertFields(): void
     {
-        $validator = new Validator($data);
+        $validator = new Validator($this->data);
         $validator
             ->required("name")
             ->required("email")

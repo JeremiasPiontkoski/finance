@@ -14,7 +14,7 @@ class JwtToken
     {
         $tokenId    = base64_encode(random_bytes(16));
         $issuedAt   = new DateTimeImmutable();
-        $expire     = $issuedAt->modify('+2 minutes')->getTimestamp();
+        $expire     = $issuedAt->modify('+10 minutes')->getTimestamp();
         $serverName = URL_BASE;
 
         $data = [

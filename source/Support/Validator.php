@@ -2,6 +2,7 @@
 namespace Source\Support;
 
 use Source\Expections\ValidationException;
+use Source\Models\Category;
 use Source\Models\User;
 
 class Validator {
