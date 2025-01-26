@@ -1,12 +1,12 @@
  <?php
 
 use CoffeeCode\Router\Router;
+use Source\Middlewares\AuthMiddleware;
 use Source\Middlewares\Teste;
+use Source\Support\Response;
 
 ini_set('display_errors', 1);
 header('Content-Type: application/json; charset=UTF-8');
-
-
 
 require  __DIR__ . "/vendor/autoload.php";
 
@@ -19,17 +19,12 @@ $router->post("/", "UserController:insert");
 $router->group("auth");
 $router->post("/", "AuthController:login");
 
+$router->group("categories", middleware: AuthMiddleware::class);
+$router->post("/", "CategoryController:insert");
+
 $router->dispatch();
 
 // /** ERROR REDIRECT */
 if ($router->error()) {
-    header('Content-Type: application/json; charset=UTF-8');
-    http_response_code(404);
-
-    echo json_encode([
-        "errors" => [
-            "type " => "endpoint_not_found",
-            "message" => "Não foi possível processar a requisição"
-        ]
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    Response::endpoint_not_found();
 }

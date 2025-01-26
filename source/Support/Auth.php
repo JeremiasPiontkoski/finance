@@ -33,7 +33,8 @@ class Auth {
         return JwtToken::create($data);
     }
 
-    public static function validateToken(string $token) {
+    public static function validateToken(string $token)
+    {
         if (JwtToken::verify($token)) {
             return true;
         }else {

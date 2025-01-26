@@ -120,4 +120,19 @@ class Response
             'data' => $response,
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
+
+    /**
+     * Retorna uma resposta para rota inválida.
+     *
+     * @return void
+     */
+    public static function endpoint_not_found(): void
+    {
+        http_response_code(404);
+        echo json_encode([
+            'status' => 'endpoint_not_found',
+            'statusCode' => 404,
+            'message' => "Não foi possível processar a requisição!",
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
 }
