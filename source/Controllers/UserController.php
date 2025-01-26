@@ -2,6 +2,7 @@
 namespace Source\Controllers;
 
 use Exception;
+use Source\Expections\UserException;
 use Source\Expections\ValidationException;
 use Source\Models\User;
 use Source\Support\Response;
@@ -20,7 +21,7 @@ class UserController extends Controller
             $this->validateInsertFields($this->data);
 
             $user = new User();
-            if (empty($user->insert($this->data))) return;
+            $user->insert($this->data);
 
             Response::success("Usuário criado com sucesso!", response: [
                 "id" => $user->id,
@@ -29,11 +30,13 @@ class UserController extends Controller
             ]);
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
-        } catch(Exception $e) {
+        } catch(UserException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        }
+        catch(Exception $e) {
             Response::error($e->getMessage());
         }
     }
-
 
     private function validateInsertFields(): void
     {
@@ -42,7 +45,6 @@ class UserController extends Controller
             ->required("name")
             ->required("email")
             ->email()
-            ->uniqueEmail()
             ->required("password")
             ->min("password", 6)
             ->validate();

@@ -11,14 +11,20 @@ class User extends DataLayer
         parent::__construct("users", ['name', 'email', 'password']);
     }
 
-    public function insert(array $data)
+    public function insert(array $data): self
     {
+        $this->checkUserByEmail($data['email']);
+
         $this->name = $data['name'];
         $this->email = $data['email'];
         $this->password = password_hash($data['password'], PASSWORD_BCRYPT);
 
         if (!$this->save()) {
-            return null;
+            throw new UserException([
+                "database" => [
+                    "Erro ao cadastrar um novo usuário. Verifique os dados e tente novamente!"
+                ]
+            ], "Erro no cadastro!");
         }
 
         return $this;
@@ -43,7 +49,7 @@ class User extends DataLayer
         return $findedUser;
     }
 
-    public function isEmailUnique(string $email, $id = null): bool
+    private function isEmailUnique(string $email, $id = null): bool
     {
         $findedUser = null;
 
@@ -58,5 +64,14 @@ class User extends DataLayer
         }
 
         return true;
+    }
+
+    private function checkUserByEmail(string $email): void
+    {
+        if (!$this->isEmailUnique($email)) {
+            throw new UserException([
+                "email" => ["O email {$email} já está em uso!"]
+            ], "Dados inválidos!");
+        }
     }
 }

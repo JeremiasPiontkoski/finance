@@ -21,7 +21,7 @@ class Category extends DataLayer
 
         if (!$this->save()) {
             throw new CategoryException([
-                "databse" => [
+                "database" => [
                     "Erro ao cadastrar uma categoria nova. Verifique os dados e tente novamente!"
                 ]
             ], "Erro no cadastro!");
@@ -43,7 +43,7 @@ class Category extends DataLayer
         
         if (!$this->save()) {
             throw new CategoryException([
-                "databse" => [
+                "database" => [
                     "Erro ao editar a categoria. Verifique os dados e tente novamente!"
                 ]
             ], "Erro na edição!");
@@ -60,7 +60,7 @@ class Category extends DataLayer
 
         if (!$category->destroy()) {
             throw new CategoryException([
-                "databse" => [
+                "database" => [
                     "Erro ao deletar a categoria. Verifique os dados e tente novamente!"
                 ]
             ], "Erro ao deletar!");

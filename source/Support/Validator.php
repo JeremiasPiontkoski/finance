@@ -46,15 +46,6 @@ class Validator {
         return $this;
     }
 
-    public function uniqueEmail(int $id = null): self
-    {
-        if (!(new User())->isEmailUnique($this->data["email"] ?? '', $id)) {
-            $this->addError("email", "Email já está em uso!");
-        }
-
-        return $this;
-    }
-
     public function numeric(string $field): self
     {
         if (!is_numeric($this->data[$field] ?? null)) {
