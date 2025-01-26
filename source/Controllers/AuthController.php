@@ -1,7 +1,9 @@
 <?php
 namespace Source\Controllers;
 
+use Dotenv\Repository\RepositoryInterface;
 use Exception;
+use Source\Expections\UserException;
 use Source\Expections\ValidationException;
 use Source\Models\User;
 use Source\Support\Auth;
@@ -17,14 +19,7 @@ class AuthController extends Controller
         try {
             $this->validateLoginFields($data);
 
-            $user = new User();
-            $user->email = $data['email'];
-            $user->password = $data['password'];
-
-            if (!$user->isLogged()) {
-                Response::invalidLogin();
-                return;
-            }
+            $user = (new User())->login($data['email'],  $data['password']);
 
             $token = Auth::generateToken([
                 "id" => $user->id,
@@ -37,7 +32,10 @@ class AuthController extends Controller
             ]);
         }catch(ValidationException $e) {
             Response::error($e->getMessage(), response: $e->getErrors());
-        }catch(Exception $e) {
+        }catch(UserException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        }
+        catch(Exception $e) {
             Response::serverError();
         }
     }

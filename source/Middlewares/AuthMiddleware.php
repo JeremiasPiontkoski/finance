@@ -1,7 +1,6 @@
 <?php
 namespace Source\Middlewares;
 
-use Dotenv\Repository\RepositoryInterface;
 use Source\Support\Auth;
 use Source\Support\Response;
 

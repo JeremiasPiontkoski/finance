@@ -2,6 +2,7 @@
 namespace Source\Models;
 
 use CoffeeCode\DataLayer\DataLayer;
+use Source\Expections\UserException;
 
 class User extends DataLayer
 {
@@ -23,24 +24,23 @@ class User extends DataLayer
         return $this;
     }
 
-    public function getAll()
+    public function getAll(): array
     {
         return $this->find()->fetch(true) ?? [];
     }
 
-    public function isLogged(): bool
+    public function login(string $email, string $password): self
     {
-        $findedUser = null;
-
-        $findedUser = $this->find("email = :email", "email={$this->email}")->fetch();
+        $findedUser = $this->find("email = :email", "email={$email}")->fetch();
         
         if (
             empty($findedUser) ||
-            !password_verify($this->password, $findedUser->password)
-        ) return false;
+            !password_verify($password, $findedUser->password)
+        ) {
+            throw new UserException([], "Email e/ou senha inválidos!", 401);
+        }
 
-        $this->id = $findedUser->id;
-        return true;
+        return $findedUser;
     }
 
     public function isEmailUnique(string $email, $id = null): bool

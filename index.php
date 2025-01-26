@@ -21,6 +21,8 @@ $router->post("/", "AuthController:login");
 
 $router->group("categories", middleware: AuthMiddleware::class);
 $router->post("/", "CategoryController:insert");
+$router->get("/", "CategoryController:getAllByUser");
+$router->put("/{id}", "CategoryController:update");
 
 $router->dispatch();
 
