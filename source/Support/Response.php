@@ -86,6 +86,24 @@ class Response
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
+
+    /**
+     * Retorna uma resposta para dados de login inválidos
+     *
+     * @param mixed $response Dados opcionais a serem incluídos.
+     * @return void
+     */
+    public static function invalidLogin($response = null): void
+    {
+        http_response_code(401);
+        echo json_encode([
+            'status' => 'error',
+            'statusCode' => 401,
+            'message' => "Email e/ou senha inválidos!",
+            'data' => $response,
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * Retorna uma resposta para usuário sem permissão.
      *

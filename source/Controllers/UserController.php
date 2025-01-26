@@ -14,7 +14,7 @@ class UserController extends Controller
         parent::__construct();
     }
 
-    public function insert(): void
+    public function insert(array $data): void
     {
         try {
             $data = $this->data;

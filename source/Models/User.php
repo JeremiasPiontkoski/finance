@@ -28,6 +28,21 @@ class User extends DataLayer
         return $this->find()->fetch(true) ?? [];
     }
 
+    public function isLogged(): bool
+    {
+        $findedUser = null;
+
+        $findedUser = $this->find("email = :email", "email={$this->email}")->fetch();
+        
+        if (
+            empty($findedUser) ||
+            !password_verify($this->password, $findedUser->password)
+        ) return false;
+
+        $this->id = $findedUser->id;
+        return true;
+    }
+
     public function isEmailUnique(string $email, $id = null): bool
     {
         $findedUser = null;

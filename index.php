@@ -16,6 +16,9 @@ $router->namespace("Source\Controllers");
 $router->group("users");
 $router->post("/", "UserController:insert");
 
+$router->group("auth");
+$router->post("/", "AuthController:login");
+
 $router->dispatch();
 
 // /** ERROR REDIRECT */

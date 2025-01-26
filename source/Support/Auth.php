@@ -29,8 +29,8 @@ class Auth {
         }
     }
 
-    public static function generateToken() {
-        return JwtToken::create(["user" => "Jeremias"]);
+    public static function generateToken(array $data) {
+        return JwtToken::create($data);
     }
 
     public static function validateToken(string $token) {
