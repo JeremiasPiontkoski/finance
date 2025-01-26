@@ -48,6 +48,24 @@ class CategoryController extends Controller
         }
     }
 
+    public function delete(array $data): void
+    {
+        try {
+            $this->validateDeleteFields($data);
+
+            (new Category())->remove($data['id']);
+
+            Response::success("Categoria deletada com sucesso!");
+        } catch (ValidationException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        }  catch (CategoryException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        }
+        catch (Exception $e) {
+            Response::serverError();
+        }
+    }
+
     public function getAllByUser(): void
     {
         $categories = (new Category())->getAllByUser();
@@ -73,6 +91,15 @@ class CategoryController extends Controller
             ->required("id")
             ->numeric("id")
             ->required("name")
+            ->validate();
+    }
+
+    private function validateDeleteFields(array $data): void
+    {
+        $validator = new Validator($data);
+        $validator
+            ->required("id")
+            ->numeric("id")
             ->validate();
     }
 }

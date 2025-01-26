@@ -36,7 +36,7 @@ class Category extends DataLayer
         return $this;
     }
 
-    public function edit(array $data)
+    public function edit(array $data): self
     {
         $category = $this->getById($data['id']);
         if (empty($category)) {
@@ -74,6 +74,34 @@ class Category extends DataLayer
         }
 
         return $this;
+    }
+
+    public function remove(int $id): bool
+    {
+        $category = $this->getById($id);
+        if (empty($category)) {
+            throw new CategoryException([
+                "id" => [
+                    "Id inválido!"
+                ]
+            ], message: "Erro ao encontrar uma categoria!");   
+        }
+
+        if (!$this->isOwner($category)) {
+            throw new CategoryException([
+                "user" => "Este usuário não tem permissão para editar esta categoria!"
+            ], message: "Permissão negada!", code: 403);
+        }
+
+        if (!$category->destroy()) {
+            throw new CategoryException([
+                "databse" => [
+                    "Erro ao deletar a categoria. Verifique os dados e tente novamente!"
+                ]
+            ], "Erro ao deletar!");
+        }
+
+        return true;
     }
 
     public function getAllByUser(): array
