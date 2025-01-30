@@ -35,9 +35,9 @@ class CategoryController extends Controller
             $this->validateUpdateFields();
 
             $category = new Category();
-            $category->edit($this->data);
+            $response = $category->edit($this->data);
 
-            Response::success("Categoria atualizada com sucesso!", response: $category->data());
+            Response::success("Categoria atualizada com sucesso!", response: $response->data());
         } catch (ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch (CategoryException $e) {

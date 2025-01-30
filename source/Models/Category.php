@@ -37,19 +37,17 @@ class Category extends DataLayer
         $this->checkIsOwner($category);
         $this->checkCategoryByName($data['name']);
 
-        $this->id = $data['id'];
-        $this->user_id = Auth::getData()->id;
-        $this->name = $data['name'];
+        $category->name = $data['name'];
         
-        if (!$this->save()) {
+        if (!$category->save()) {
             throw new CategoryException([
                 "databse" => [
-                    $this->fail()->getMessage()
+                    $category->fail()->getMessage()
                 ]
-            ], "Erro na edição!", $this->fail()->getCode());
+            ], "Erro na edição!", $category->fail()->getCode());
         }
 
-        return $this;
+        return $category;
     }
 
     public function remove(int $id): bool
