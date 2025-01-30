@@ -52,7 +52,7 @@ class Category extends DataLayer
         return $this;
     }
 
-    public function remove(int $id): bool
+    public function remove(int $id): void
     {
         $category = $this->checkCategoryById($id);
         
@@ -65,8 +65,6 @@ class Category extends DataLayer
                 ]
             ], "Erro ao deletar!");
         }
-
-        return true;
     }
 
     public function getAllByUser(): array

@@ -53,6 +53,23 @@ class TransactionController extends Controller
         }
     }
 
+    public function delete(array $data): void
+    {
+        try {   
+            $this->data['id'] = $data['id'];
+            $this->validateDeleteFields();
+
+            (new Transaction())->remove($data['id']);
+            Response::success("Transação deletada com sucesso!");
+        } catch(ValidationException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        } catch(TransactionException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+        } catch(Exception $e) {
+            Response::serverError();
+        }
+    }
+
     private function validateInsertFields(): void
     {
         $validator = new Validator($this->data);
@@ -76,6 +93,15 @@ class TransactionController extends Controller
             ->required("type")
             ->required("amount")
             ->numeric("amount")
+            ->validate();
+    }
+
+    private function validateDeleteFields(): void
+    {
+        $validator = new Validator($this->data);
+        $validator
+            ->required("id")
+            ->numeric("id")
             ->validate();
     }
 }

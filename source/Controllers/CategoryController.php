@@ -58,10 +58,9 @@ class CategoryController extends Controller
             Response::success("Categoria deletada com sucesso!");
         } catch (ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
-        }  catch (CategoryException $e) {
+        } catch (CategoryException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             Response::serverError();
         }
     }

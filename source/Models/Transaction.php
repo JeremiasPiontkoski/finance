@@ -62,6 +62,20 @@ class Transaction extends DataLayer
         return $transaction;
     }
 
+    public function remove(int $id): void
+    {
+        $transaction = $this->checkTransactionById($id);
+        $this->checkIsOwner($transaction);
+
+        if (!$transaction->destroy()) {
+            throw new TransactionException([
+                "database" => [
+                    "Erro ao deletar a transação. Verifique os dados e tente novamente!"
+                ]
+            ], "Erro ao deletar!");
+        }
+    }
+
     public function getById(int $id): self|array
     {
         return $this->findById($id) ?? [];
