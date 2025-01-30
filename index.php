@@ -33,6 +33,36 @@ $router->get("/{id}", "TransactionController:getById");
 $router->get("/", "TransactionController:getAll");
 $router->get("/type/{type}", "TransactionController:getByType");
 
+$router->group("files", middleware: AuthMiddleware::class);
+$router->get("/csv/{type}", "FileController:exportByTypeToCsv");
+
+
+$router->group("file");
+$router->get("/csvFile", function() {
+    header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename="dados.csv"');
+header('Pragma: no-cache');
+header('Expires: 0');
+
+$dados = [
+    ['ID', 'Nome', 'Email'],
+    [1, 'Marcos Rogério', 'marcos@example.com'],
+    [2, 'Ana Souza', 'ana@example.com'],
+    [3, 'Carlos Silva', 'carlos@example.com']
+];
+
+// Abre a saída padrão para escrever o CSV
+$output = fopen('php://output', 'w');
+
+// Escreve os dados no CSV
+foreach ($dados as $linha) {
+    fputcsv($output, $linha);
+}
+
+// Fecha o stream
+fclose($output);
+});
+
 $router->dispatch();
 
 // /** ERROR REDIRECT */

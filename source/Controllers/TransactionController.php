@@ -28,7 +28,7 @@ class TransactionController extends Controller
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(TransactionException $e) {
-            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(Exception $e) {
             Response::serverError();
         }
@@ -47,7 +47,7 @@ class TransactionController extends Controller
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(TransactionException $e) {
-            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(Exception $e) {
             Response::serverError();
         }
@@ -64,7 +64,7 @@ class TransactionController extends Controller
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(TransactionException $e) {
-            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(Exception $e) {
             Response::serverError();
         }
@@ -83,7 +83,7 @@ class TransactionController extends Controller
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(TransactionException $e) {
-            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(Exception $e) {
             Response::serverError();
         }   
@@ -102,7 +102,7 @@ class TransactionController extends Controller
 
             Response::success("Consulta feita com sucesso!", response: $transactions);
         } catch(TransactionException $e) {
-            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(Exception $e) {
             Response::serverError();
         }  

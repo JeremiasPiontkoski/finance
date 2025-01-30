@@ -8,6 +8,7 @@ use Source\Support\Auth;
 
 class Transaction extends DataLayer
 {
+    public static $headCsvFile = ["Categoria", "Tipo", "Valor", "Descrição", "Data"];
     private array $types = ["receita", "despesa"];
     private object $loggedUserData;
 
