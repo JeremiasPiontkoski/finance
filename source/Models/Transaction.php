@@ -94,9 +94,7 @@ class Transaction extends DataLayer
     {
         $transactions = $this->getAllByUser(); 
 
-        if (empty($transactions)) {
-            return [];
-        }
+        if (empty($transactions)) return [];
 
         $response = $this->getCategoriesByTransactions($transactions);
         return $response;
@@ -105,6 +103,25 @@ class Transaction extends DataLayer
     public function getAllByUser(): array
     {
         return $this->find("user_id = :uid", "uid={$this->loggedUserData->id}")->fetch(true) ?? [];
+    }
+
+    public function getByType(string $type): array
+    {
+        $this->validateType($type);
+
+
+        $transactions = $this->find("user_id = :uid AND type = :type", "uid={$this->loggedUserData->id}&type={$type}")->fetch(true);
+        if (empty($transactions)) return [];
+
+        $response['totalAmount'] = $this->getTotalAmountByTypeAndUser($type)->totalAmount;
+        $response['transactions'] = $this->getCategoriesByTransactions($transactions);
+
+        return $response;
+    }
+
+    private function getTotalAmountByTypeAndUser(string $type)
+    {
+        return $this->find("user_id = :uid AND type = :type", "uid={$this->loggedUserData->id}&type={$type}", "type, SUM(amount) AS totalAmount")->fetch() ?? [];
     }
 
     private function validateType(string $type): void

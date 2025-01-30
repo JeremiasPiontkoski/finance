@@ -31,6 +31,7 @@ $router->put("/{id}", "TransactionController:update");
 $router->delete("/{id}", "TransactionController:delete");
 $router->get("/{id}", "TransactionController:getById");
 $router->get("/", "TransactionController:getAll");
+$router->get("/type/{type}", "TransactionController:getByType");
 
 $router->dispatch();
 

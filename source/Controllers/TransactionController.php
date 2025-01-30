@@ -95,6 +95,19 @@ class TransactionController extends Controller
         Response::success("Consulta feita com sucesso!", response: $transactions);
     }
 
+    public function getByType(array $data): void
+    {
+        try {
+            $transactions = (new Transaction())->getByType($data['type']);
+
+            Response::success("Consulta feita com sucesso!", response: $transactions);
+        } catch(TransactionException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+        } catch(Exception $e) {
+            Response::serverError();
+        }  
+    }
+
     private function validateInsertFields(): void
     {
         $validator = new Validator($this->data);
