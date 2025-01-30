@@ -57,7 +57,7 @@ class TransactionController extends Controller
     {
         try {   
             $this->data['id'] = $data['id'];
-            $this->validateDeleteFields();
+            $this->validateId();
 
             (new Transaction())->remove($data['id']);
             Response::success("Transação deletada com sucesso!");
@@ -68,6 +68,25 @@ class TransactionController extends Controller
         } catch(Exception $e) {
             Response::serverError();
         }
+    }
+
+    public function getById(array $data): void
+    {
+        try {   
+            $this->data['id'] = $data['id'];
+            $this->validateId();
+
+            $transaction = new Transaction();
+            $response = $transaction->getById($data['id']);
+
+            Response::success("Transação encontrada com sucesso!", response: $response->data());
+        } catch(ValidationException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        } catch(TransactionException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+        } catch(Exception $e) {
+            Response::serverError();
+        }   
     }
 
     private function validateInsertFields(): void
@@ -96,7 +115,7 @@ class TransactionController extends Controller
             ->validate();
     }
 
-    private function validateDeleteFields(): void
+    private function validateId(): void
     {
         $validator = new Validator($this->data);
         $validator

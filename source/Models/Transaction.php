@@ -76,9 +76,17 @@ class Transaction extends DataLayer
         }
     }
 
-    public function getById(int $id): self|array
+    public function getById(int $id): self
     {
-        return $this->findById($id) ?? [];
+        $transaction = $this->checkTransactionById($id);
+        $this->checkIsOwner($transaction);
+
+        if (!empty($transaction->category_id)) {
+            $category = (new Category())->findById($transaction->category_id);
+            $transaction->category = $category->data();
+        }
+
+        return $transaction;
     }
 
     private function validateType(string $type): void
@@ -117,7 +125,7 @@ class Transaction extends DataLayer
 
     private function checkTransactionById(int $id): self
     {
-        $transaction = $this->getById($id);
+        $transaction = $this->findById($id);
         if (empty($transaction)) {
             throw new TransactionException([
                 "id" => [
