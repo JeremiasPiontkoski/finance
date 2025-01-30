@@ -22,9 +22,9 @@ class User extends DataLayer
         if (!$this->save()) {
             throw new UserException([
                 "database" => [
-                    "Erro ao cadastrar um novo usuário. Verifique os dados e tente novamente!"
+                    $this->fail()->getMessage()
                 ]
-            ], "Erro no cadastro!");
+            ], "Erro no cadastro!", $this->fail()->getCode());
         }
 
         return $this;
