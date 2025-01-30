@@ -34,10 +34,43 @@ class TransactionController extends Controller
         }
     }
 
+    public function update(array $data): void
+    {
+        try {   
+            $this->data["id"] = $data["id"];
+            $this->validateUpdateFields();
+
+            $transaction = new Transaction();
+            $response = $transaction->edit($this->data);
+
+            Response::success("Transação atualizada com sucesso!", response: $response->data());
+        } catch(ValidationException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        } catch(TransactionException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErros());
+        } catch(Exception $e) {
+            Response::serverError();
+        }
+    }
+
     private function validateInsertFields(): void
     {
         $validator = new Validator($this->data);
         $validator
+            ->required("category_id")
+            ->numeric("category_id")
+            ->required("type")
+            ->required("amount")
+            ->numeric("amount")
+            ->validate();
+    }
+
+    private function validateUpdateFields(): void
+    {
+        $validator = new Validator($this->data);
+        $validator
+            ->required("id")
+            ->numeric("id")
             ->required("category_id")
             ->numeric("category_id")
             ->required("type")

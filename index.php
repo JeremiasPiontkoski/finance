@@ -27,6 +27,7 @@ $router->delete("/{id}", "CategoryController:delete");
 
 $router->group("transactions", middleware: AuthMiddleware::class);
 $router->post("/", "TransactionController:insert");
+$router->put("/{id}", "TransactionController:update");
 
 $router->dispatch();
 
