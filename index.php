@@ -25,6 +25,9 @@ $router->get("/", "CategoryController:getAllByUser");
 $router->put("/{id}", "CategoryController:update");
 $router->delete("/{id}", "CategoryController:delete");
 
+$router->group("transactions", middleware: AuthMiddleware::class);
+$router->post("/", "TransactionController:insert");
+
 $router->dispatch();
 
 // /** ERROR REDIRECT */

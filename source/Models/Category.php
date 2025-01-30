@@ -75,9 +75,14 @@ class Category extends DataLayer
         return $this->find("user_id = :uid", "uid=$userData->id}")->fetch(true) ?? [];
     }
 
-    public function getById(string $id): self|array
+    public function getById(int $id): self|array
     {
         return $this->findById($id) ?? [];
+    }
+
+    public function getByIdAndUserId(int $category_id, int $user_id): self|array
+    {
+        return $this->find("id = :id AND user_id = :uid", "id={$category_id}&uid={$user_id}")->fetch() ?? [];
     }
 
     private function existsByName(string $name): bool
