@@ -2,6 +2,7 @@
 namespace Source\Models;
 
 use CoffeeCode\DataLayer\DataLayer;
+use PHPUnit\Framework\EmptyStringException;
 use Source\Expections\TransactionException;
 use Source\Support\Auth;
 
@@ -89,6 +90,23 @@ class Transaction extends DataLayer
         return $transaction;
     }
 
+    public function getAll(): array
+    {
+        $transactions = $this->getAllByUser(); 
+
+        if (empty($transactions)) {
+            return [];
+        }
+
+        $response = $this->getCategoriesByTransactions($transactions);
+        return $response;
+    }
+
+    public function getAllByUser(): array
+    {
+        return $this->find("user_id = :uid", "uid={$this->loggedUserData->id}")->fetch(true) ?? [];
+    }
+
     private function validateType(string $type): void
     {
         if (!in_array($type, $this->types)) {
@@ -135,5 +153,19 @@ class Transaction extends DataLayer
         }
 
         return $transaction;
+    }
+
+    private function getCategoriesByTransactions(array $transactions): array
+    {
+        $response = array_map(function($transaction) {
+            if (!empty($transaction->category_id)) {
+                $category = (new Category())->findById($transaction->category_id);
+                $transaction->category = $category->data();
+            }
+
+            return $transaction->data();
+        }, $transactions);
+
+        return $response;
     }
 }

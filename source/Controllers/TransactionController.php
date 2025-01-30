@@ -89,6 +89,12 @@ class TransactionController extends Controller
         }   
     }
 
+    public function getAll(): void
+    {
+        $transactions = (new Transaction())->getAll();
+        Response::success("Consulta feita com sucesso!", response: $transactions);
+    }
+
     private function validateInsertFields(): void
     {
         $validator = new Validator($this->data);
