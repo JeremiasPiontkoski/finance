@@ -1,7 +1,6 @@
 <?php
 namespace Source\Controllers;
 
-use Dotenv\Repository\RepositoryInterface;
 use Exception;
 use League\Csv\Writer;
 use Source\Expections\FileException;
@@ -9,8 +8,6 @@ use Source\Expections\TransactionException;
 use Source\Models\Transaction;
 use Source\Support\Response;
 use SplTempFileObject;
-
-use function PHPSTORM_META\type;
 
 class FileController extends Controller
 {
