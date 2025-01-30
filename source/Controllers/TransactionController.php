@@ -24,7 +24,7 @@ class TransactionController extends Controller
             $transaction = new Transaction();
             $transaction->insert($this->data);
 
-            Response::success("Transação cadastrada com sucesso!", response: $transaction->data());
+            Response::success("Transação cadastrada com sucesso!", 201, response: $transaction->data());
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(TransactionException $e) {
