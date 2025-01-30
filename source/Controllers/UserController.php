@@ -23,7 +23,7 @@ class UserController extends Controller
             $user = new User();
             $user->insert($this->data);
 
-            Response::success("Usuário criado com sucesso!", response: [
+            Response::success("Usuário criado com sucesso!", 201, response: [
                 "id" => $user->id,
                 "name" => $user->name,
                 "email" => $user->email
