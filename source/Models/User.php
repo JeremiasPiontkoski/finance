@@ -31,6 +31,25 @@ class User extends DataLayer
         return $this;
     }
 
+    public function edit(array $data): self
+    {
+        $this->checkUserByEmail($data['email'], Auth::getData()->id);
+        $user = $this->getByEmail($data['email']);
+
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+
+        if (!$user->save()) {
+            throw new UserException([
+                "database" => [
+                    $user->fail()->getMessage()
+                ]
+            ], "Erro na edição!", $user->fail()->getCode());
+        }
+
+        return $user;
+    }
+
     public function getAll(): array
     {
         return $this->find()->fetch(true) ?? [];

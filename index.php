@@ -2,7 +2,6 @@
 
 use CoffeeCode\Router\Router;
 use Source\Middlewares\AuthMiddleware;
-use Source\Middlewares\Teste;
 use Source\Support\Response;
 
 ini_set('display_errors', 1);
@@ -15,6 +14,7 @@ $router->namespace("Source\Controllers");
 
 $router->group("users");
 $router->post("/", "UserController:insert");
+$router->put("/", "UserController:update", middleware: AuthMiddleware::class);
 
 $router->group("auth");
 $router->post("/", "AuthController:login");

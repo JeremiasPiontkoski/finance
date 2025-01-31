@@ -23,17 +23,28 @@ class UserController extends Controller
             $user = new User();
             $user->insert($this->data);
 
-            Response::success("Usuário criado com sucesso!", 201, response: [
-                "id" => $user->id,
-                "name" => $user->name,
-                "email" => $user->email
-            ]);
+            Response::success("Usuário criado com sucesso!", 201, response: $this->getResponseUser($user));
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
         } catch(UserException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        } catch(Exception $e) {
+            Response::error($e->getMessage());
         }
-        catch(Exception $e) {
+    }
+
+    public function update(): void
+    {
+        try {
+            $this->validateUpdateFields();
+
+            $user = (new User())->edit($this->data);
+            Response::success("Usuário editado com sucesso!", response: $this->getResponseUser($user));
+        } catch(ValidationException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        } catch(UserException $e) {
+            Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
+        } catch(Exception $e) {
             Response::error($e->getMessage());
         }
     }
@@ -54,11 +65,18 @@ class UserController extends Controller
     {
         $validator = new Validator($this->data);
         $validator
-            ->required("id")
-            ->numeric("id")
             ->required("name")
             ->required("email")
             ->email()
             ->validate();
+    }
+
+    private function getResponseUser(User $user): array
+    {
+        return [
+            "id" => $user->id,
+            "name" => $user->name,
+            "email" => $user->email
+        ];
     }
 }
