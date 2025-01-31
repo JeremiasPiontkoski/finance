@@ -25,6 +25,17 @@ $router->get("/", "CategoryController:getAllByUser");
 $router->put("/{id}", "CategoryController:update");
 $router->delete("/{id}", "CategoryController:delete");
 
+$router->group("transactions", middleware: AuthMiddleware::class);
+$router->post("/", "TransactionController:insert");
+$router->put("/{id}", "TransactionController:update");
+$router->delete("/{id}", "TransactionController:delete");
+$router->get("/{id}", "TransactionController:getById");
+$router->get("/", "TransactionController:getAll");
+$router->get("/type/{type}", "TransactionController:getByType");
+
+$router->group("files", middleware: AuthMiddleware::class);
+$router->get("/csv/{type}", "FileController:exportByTypeToCsv");
+
 $router->dispatch();
 
 // /** ERROR REDIRECT */

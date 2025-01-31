@@ -18,7 +18,7 @@ class CategoryController extends Controller
             $category = new Category();
             $category->insert($this->data);
 
-            Response::success("Categoria criada com sucesso!", response: $category->data());
+            Response::success("Categoria criada com sucesso!", 201, response: $category->data());
         } catch(ValidationException $e) {
             Response::error($e->getMessage(), response: $e->getErrors());
         } catch (CategoryException $e) {
@@ -58,10 +58,9 @@ class CategoryController extends Controller
             Response::success("Categoria deletada com sucesso!");
         } catch (ValidationException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
-        }  catch (CategoryException $e) {
+        } catch (CategoryException $e) {
             Response::error($e->getMessage(), $e->getCode(), $e->getErrors());
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             Response::serverError();
         }
     }

@@ -50,7 +50,7 @@ class Category extends DataLayer
         return $category;
     }
 
-    public function remove(int $id): bool
+    public function remove(int $id): void
     {
         $category = $this->checkCategoryById($id);
         
@@ -63,8 +63,6 @@ class Category extends DataLayer
                 ]
             ], "Erro ao deletar!", $this->fail()->getCode());
         }
-
-        return true;
     }
 
     public function getAllByUser(): array
@@ -73,9 +71,14 @@ class Category extends DataLayer
         return $this->find("user_id = :uid", "uid=$userData->id}")->fetch(true) ?? [];
     }
 
-    public function getById(string $id): self|array
+    public function getById(int $id): self|array
     {
         return $this->findById($id) ?? [];
+    }
+
+    public function getByIdAndUserId(int $category_id, int $user_id): self|array
+    {
+        return $this->find("id = :id AND user_id = :uid", "id={$category_id}&uid={$user_id}")->fetch() ?? [];
     }
 
     private function existsByName(string $name): bool
