@@ -22,9 +22,9 @@ class Category extends DataLayer
         if (!$this->save()) {
             throw new CategoryException([
                 "database" => [
-                    "Erro ao cadastrar uma categoria nova. Verifique os dados e tente novamente!"
+                    $this->fail()->getMessage()
                 ]
-            ], "Erro no cadastro!");
+            ], "Erro no cadastro!", $this->fail()->getCode());
         }
 
         return $this;
@@ -37,19 +37,17 @@ class Category extends DataLayer
         $this->checkIsOwner($category);
         $this->checkCategoryByName($data['name']);
 
-        $this->id = $data['id'];
-        $this->user_id = Auth::getData()->id;
-        $this->name = $data['name'];
+        $category->name = $data['name'];
         
-        if (!$this->save()) {
+        if (!$category->save()) {
             throw new CategoryException([
-                "database" => [
-                    "Erro ao editar a categoria. Verifique os dados e tente novamente!"
+                "databse" => [
+                    $category->fail()->getMessage()
                 ]
-            ], "Erro na edição!");
+            ], "Erro na edição!", $category->fail()->getCode());
         }
 
-        return $this;
+        return $category;
     }
 
     public function remove(int $id): bool
@@ -60,10 +58,10 @@ class Category extends DataLayer
 
         if (!$category->destroy()) {
             throw new CategoryException([
-                "database" => [
-                    "Erro ao deletar a categoria. Verifique os dados e tente novamente!"
+                "databse" => [
+                    $this->fail()->getMessage()
                 ]
-            ], "Erro ao deletar!");
+            ], "Erro ao deletar!", $this->fail()->getCode());
         }
 
         return true;
