@@ -2,7 +2,6 @@
 namespace Source\Models;
 
 use CoffeeCode\DataLayer\DataLayer;
-use PHPUnit\Framework\EmptyStringException;
 use Source\Expections\TransactionException;
 use Source\Support\Auth;
 

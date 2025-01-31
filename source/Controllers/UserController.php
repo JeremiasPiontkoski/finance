@@ -49,4 +49,16 @@ class UserController extends Controller
             ->min("password", 6)
             ->validate();
     }
+
+    private function validateUpdateFields(): void
+    {
+        $validator = new Validator($this->data);
+        $validator
+            ->required("id")
+            ->numeric("id")
+            ->required("name")
+            ->required("email")
+            ->email()
+            ->validate();
+    }
 }

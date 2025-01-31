@@ -3,6 +3,7 @@ namespace Source\Models;
 
 use CoffeeCode\DataLayer\DataLayer;
 use Source\Expections\UserException;
+use Source\Support\Auth;
 
 class User extends DataLayer
 {
@@ -49,6 +50,11 @@ class User extends DataLayer
         return $findedUser;
     }
 
+    private function getByEmail(string $email): self|array
+    {
+        return $this->find("email = :email", "email={$email}")->fetch() ?? [];
+    }
+
     private function isEmailUnique(string $email, $id = null): bool
     {
         $findedUser = null;
@@ -66,9 +72,9 @@ class User extends DataLayer
         return true;
     }
 
-    private function checkUserByEmail(string $email): void
+    private function checkUserByEmail(string $email, int $id = null): void
     {
-        if (!$this->isEmailUnique($email)) {
+        if (!$this->isEmailUnique($email, $id)) {
             throw new UserException([
                 "email" => ["O email {$email} já está em uso!"]
             ], "Dados inválidos!");
