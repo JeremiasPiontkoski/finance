@@ -1,6 +1,6 @@
 <?php
 
-define("URL_BASE", "http://localhos/finance");
+define("URL_BASE", "http://localhost/finance");
 
 const DATA_LAYER_CONFIG = [
     "driver" => "mysql",
