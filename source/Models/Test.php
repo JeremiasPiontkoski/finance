@@ -1,5 +1,6 @@
 <?php
-namespace Source\Tests;
+namespace Source\Models;
+
 
 use CoffeeCode\DataLayer\Connect;
 use PDO;

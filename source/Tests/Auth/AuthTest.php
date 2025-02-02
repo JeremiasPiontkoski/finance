@@ -2,7 +2,7 @@
 namespace Source\Tests\Auth;
 
 use Source\Controllers\AuthController;
-use Source\Tests\Test;
+use Source\Models\Test;
 
 class AuthTest extends Test
 {
