@@ -81,9 +81,10 @@ class Category extends DataLayer
         return $this->find("id = :id AND user_id = :uid", "id={$category_id}&uid={$user_id}")->fetch() ?? [];
     }
 
-    private function existsByName(string $name): bool
+    private function existsByNameAndUser(string $name): bool
     {
-        $exists = $this->find("name = :name", "name={$name}")->count();
+        $user_id = Auth::getData()->id;
+        $exists = $this->find("name = :name AND user_id = :uid", "name={$name}&uid={$user_id}")->count();
 
         return $exists > 0;
     }
@@ -95,7 +96,7 @@ class Category extends DataLayer
 
     private function checkCategoryByName(string $name): void
     {
-        if ($this->existsByName($name)) {
+        if ($this->existsByNameAndUser($name)) {
             throw new CategoryException([
                 "name" => [
                     "O nome {$name} já está em uso!"
