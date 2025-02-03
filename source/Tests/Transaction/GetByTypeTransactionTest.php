@@ -4,7 +4,7 @@ namespace Source\Tests\Transaction;
 use Source\Controllers\TransactionController;
 use Source\Models\Test;
 
-class GetByTypeTest extends Test
+class GetByTypeTransactionTest extends Test
 {
     public function testDespesaSuccess(): void
     {

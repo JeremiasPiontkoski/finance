@@ -1,17 +1,17 @@
 <?php
-namespace Source\Tests\Category;
+namespace Source\Tests\Transaction;
 
-use Source\Controllers\CategoryController;
+use Source\Controllers\TransactionController;
 use Source\Models\Test;
 
-class GetCategoryTest extends Test
+class GetTransactionsTest extends Test
 {
     public function testSuccess(): void
     {
-        $categoryController = new CategoryController();
-        
+        $transactionController = new TransactionController();
+
         ob_start();
-        $categoryController->getAllByUser();
+        $transactionController->getAll();
         $response = json_decode(ob_get_clean(), true);
 
         $this->assertEquals("success", $response['status']);
