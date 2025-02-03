@@ -34,7 +34,7 @@ class User extends DataLayer
     public function edit(array $data): self
     {
         $this->checkUserByEmail($data['email'], Auth::getData()->id);
-        $user = $this->getByEmail($data['email']);
+        $user = $this->findById(Auth::getData()->id);
 
         $user->name = $data['name'];
         $user->email = $data['email'];
