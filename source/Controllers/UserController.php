@@ -15,6 +15,30 @@ class UserController extends Controller
         parent::__construct();
     }
 
+    /**
+     * @OA\Post(
+     *     path="/users",
+     *     summary="Insert User",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string", example=""),
+     *             @OA\Property(property="email", type="string", format="email", example=""),
+     *             @OA\Property(property="password", type="string", example="")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     )
+     * )
+     */
     public function insert(): void
     {
         try {
@@ -33,6 +57,34 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/users",
+     *     summary="Update User",
+     *     tags={"User"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email"},
+     *             @OA\Property(property="name", type="string", example=""),
+     *             @OA\Property(property="email", type="string", format="email", example=""),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function update(): void
     {
         try {

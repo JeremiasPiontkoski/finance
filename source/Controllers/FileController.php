@@ -16,6 +16,33 @@ class FileController extends Controller
         parent::__construct();
     }
 
+    /**
+     * @OA\Get(
+     *     path="/files/csv/{type}",
+     *     summary="Get Csv Transactions By Type",
+     *     @OA\Parameter(
+     *         name="type",
+     *         in="path",
+     *         required=true,
+     *         description="Type Transaction",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     tags={"File"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function exportByTypeToCsv(array $data): void
     {
         try {

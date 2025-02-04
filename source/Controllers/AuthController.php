@@ -14,6 +14,33 @@ use Source\Support\Validator;
 
 class AuthController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/auth",
+     *     summary="Login",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example=""),
+     *             @OA\Property(property="password", type="string", example="")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucessfull Login",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description=""
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function login(): void
     {
         $data = $this->data;

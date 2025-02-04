@@ -16,6 +16,36 @@ class TransactionController extends Controller
         parent::__construct();
     }
 
+    /**
+     * @OA\Post(
+     *     path="/transactions",
+     *     summary="Insert Transaction",
+     *     tags={"Transaction"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"category_id", "type", "amount"},
+     *             @OA\Property(property="category_id", type="integer", example=""),
+     *             @OA\Property(property="type", type="string", example=""),
+     *             @OA\Property(property="amount", type="integer", format="float", example=""),
+     *             @OA\Property(property="description", type="string", example=""),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function insert(): void
     {
         try {   
@@ -34,6 +64,43 @@ class TransactionController extends Controller
         }
     }
 
+    /**
+     * @OA\Put(
+     *     path="/transactions/{id}",
+     *     summary="Update Transaction",
+     *     tags={"Transaction"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Transaction Id",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"category_id", "type", "amount"},
+     *             @OA\Property(property="category_id", type="integer", example=""),
+     *             @OA\Property(property="type", type="string", example=""),
+     *             @OA\Property(property="amount", type="integer", format="float", example=""),
+     *             @OA\Property(property="description", type="string", example=""),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function update(array $data): void
     {
         try {   
@@ -53,6 +120,33 @@ class TransactionController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/transactions/{id}",
+     *     summary="Delete Transaction By Id",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Transaction Id",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     tags={"Transaction"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function delete(array $data): void
     {
         try {   
@@ -70,6 +164,33 @@ class TransactionController extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/transactions/{id}",
+     *     summary="Get Transaction By Id",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Transaction Id",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     tags={"Transaction"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function getById(array $data): void
     {
         try {   
@@ -89,12 +210,55 @@ class TransactionController extends Controller
         }   
     }
 
+    /**
+     * @OA\Get(
+     *     path="/transactions",
+     *     summary="Get All Transactions By UserId",
+     *     tags={"Transaction"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function getAll(): void
     {
         $transactions = (new Transaction())->getAll();
         Response::success("Consulta feita com sucesso!", response: $transactions);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/transactions/type/{type}",
+     *     summary="Get Transaction By Type",
+     *     @OA\Parameter(
+     *         name="type",
+     *         in="path",
+     *         required=true,
+     *         description="Type Transaction",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     tags={"Transaction"},
+     *     security={{"TokenJwt": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Sucess",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid Data"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     )
+     * )
+     */
     public function getByType(array $data): void
     {
         try {
