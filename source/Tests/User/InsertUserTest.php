@@ -10,8 +10,8 @@ class InsertUserTest extends Test
     {
         $userController = new UserController();
         $userController->data = [
-            "name" => "email",
-            "email" => "email@gmail.com",
+            "name" => "nameForTest",
+            "email" => "emailForTest@gmail.com",
             "password" => "12345678"
         ];
 
@@ -50,8 +50,8 @@ class InsertUserTest extends Test
     {
         $userController = new UserController();
         $userController->data = [
-            "name" => "email",
-            "email" => "email",
+            "name" => "nameForTest",
+            "email" => "emailForTest",
             "password" => "123456"
         ];
 
@@ -70,8 +70,8 @@ class InsertUserTest extends Test
     {
         $userController = new UserController();
         $userController->data = [
-            "name" => "email",
-            "email" => "email@gmail.com",
+            "name" => "nameForTest",
+            "email" => "emailForTest@gmail.com",
             "password" => "12345"
         ];
 
@@ -89,12 +89,18 @@ class InsertUserTest extends Test
     public function testEmailAlreadyInserted(): void
     {
         $userController = new UserController();
-        $userController->data = [
-            "name" => "jeremias",
-            "email" => "jeremias@gmail.com",
-            "password" => "123456"
+        $userData = [
+            "name" => "nameForTest",
+            "email" => "emailForTest@gmail.com",
+            "password" => "12345678"
         ];
 
+        $userController->data = $userData;
+        ob_start();
+        $userController->insert();
+        ob_get_clean();
+
+        $userController->data = $userData;
         ob_start();
         $userController->insert();
         $response = json_decode(ob_get_clean(), true);

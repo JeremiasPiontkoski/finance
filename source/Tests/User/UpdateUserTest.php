@@ -1,10 +1,8 @@
 <?php
 namespace Source\Tests\User;
 
-use Source\Controllers\AuthController;
 use Source\Controllers\UserController;
 use Source\Models\Test;
-use Source\Support\Auth;
 
 class UpdateUserTest extends Test
 {
