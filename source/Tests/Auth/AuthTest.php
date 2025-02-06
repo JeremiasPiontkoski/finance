@@ -6,7 +6,9 @@ use Source\Models\Test;
 
 class AuthTest extends Test
 {
-
+    /**
+     * Teste de autenticação com sucesso
+     */
     public function testSuccess(): void
     {
         $authController = new AuthController();
@@ -27,6 +29,9 @@ class AuthTest extends Test
         $this->assertArrayHasKey("token", $response['data']);
     }
 
+    /**
+     * Teste sem dados informados
+     */
     public function testEmptyData(): void
     {
         $authController = new AuthController();
@@ -44,6 +49,9 @@ class AuthTest extends Test
         $this->assertArrayHasKey("password", $response['data']);
     }
 
+    /**
+     * Teste com email inválido
+     */
     public function testInvalidEmail(): void
     {
         $authController = new AuthController();
@@ -63,6 +71,9 @@ class AuthTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
+    /**
+     * Teste com dados inválidos
+     */
     public function testInvalidData(): void
     {
         $authController = new AuthController();

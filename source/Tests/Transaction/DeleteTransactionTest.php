@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class DeleteTransactionTest extends Test
 {
+    /**
+     * Teste com sucesso
+     */
     public function testSuccess(): void
     {
         $transactionController = new TransactionController();
@@ -20,6 +23,9 @@ class DeleteTransactionTest extends Test
         $this->assertArrayHasKey("data", $response);
     }
 
+    /**
+     * Teste id como string('a')
+     */
     public function testIdAsString(): void
     {
         $transactionController = new TransactionController();
@@ -35,6 +41,9 @@ class DeleteTransactionTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
 
+    /**
+     * Teste com id inexistente
+     */
     public function testInvalidId(): void
     {
         $transactionController = new TransactionController();
@@ -50,6 +59,9 @@ class DeleteTransactionTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
 
+    /**
+     * Teste permissão negada
+     */
     public function testPermissionDenied(): void
     {
         $transactionController = new TransactionController();

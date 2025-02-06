@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class DeleteCategoryTest extends Test
 {
+    /**
+     * Teste com sucesso
+     */
     public function testSuccess(): void
     {
         $categoryController = new CategoryController();
@@ -20,6 +23,9 @@ class DeleteCategoryTest extends Test
         $this->assertArrayHasKey("data", $response);
     }
 
+    /**
+     * Teste com id como string('a')
+     */
     public function testIdAsString(): void
     {
         $categoryController = new CategoryController();
@@ -35,6 +41,9 @@ class DeleteCategoryTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
     
+    /**
+     * Teste com id inexistente
+     */
     public function testInvalidId(): void
     {
         $categoryController = new CategoryController();
@@ -50,6 +59,9 @@ class DeleteCategoryTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
 
+    /**
+     * Teste usuário sem permissão
+     */
     public function testPermissionDenied(): void
     {
         $categoryController = new CategoryController();

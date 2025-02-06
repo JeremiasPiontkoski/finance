@@ -6,10 +6,19 @@ use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+/**
+ * Classe responsável por criar e verificar o TokenJWt
+ * @property $token Token de autenticação gerado dentro da classe
+ */
 class JwtToken
 {
     public static $token = null;
 
+    /**
+     * Cria o Token de autenticação
+     * @param array $dataInfor Dados que serão guardados dentro do token
+     * @return string Irá retornar um token jwt para autenticação
+     */
     public static function create (array $dataInfo) : string
     {
         $tokenId    = base64_encode(random_bytes(16));
@@ -33,6 +42,11 @@ class JwtToken
         );
     }
 
+    /**
+     * Verifica se o token é valido ou expirado
+     * @param string $token Token a ser verificado
+     * @param bool True para caso o token seja válido e False para caso ele não seja válido
+     */
     public static function verify (string $token) : bool
     {
         try {

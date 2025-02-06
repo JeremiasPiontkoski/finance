@@ -41,6 +41,13 @@ class Response
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
+    /**
+     * Retorna uma resposta de não encontrado
+     *
+     * @param string $message Mensagem de erro.
+     * @param mixed $response Dados opcionais a serem incluídos.
+     * @return void
+     */
     public static function notFound(string $message = "Nenhum resultado encontrado!", $response = null): void
     {
         http_response_code(404);

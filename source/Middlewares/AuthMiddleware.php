@@ -4,9 +4,16 @@ namespace Source\Middlewares;
 use Source\Support\Auth;
 use Source\Support\Response;
 
+/**
+ * Classe responsável pela proteção de rotas privadas
+ */
 class AuthMiddleware
 {
-    public function handle()
+    /**
+     * Verifica se o token é valido
+     * @return bool True caso o token seja válido e False caso não seja
+     */
+    public function handle(): bool
     {
         $headers = getallheaders();
 

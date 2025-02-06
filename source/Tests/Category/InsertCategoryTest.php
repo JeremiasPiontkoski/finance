@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class InsertCategoryTest extends Test
 {
+    /**
+     * Teste com sucesso
+     */
     public function testSuccess(): void
     {
         $categoryController = new CategoryController();
@@ -28,6 +31,9 @@ class InsertCategoryTest extends Test
         $this->assertArrayHasKey("updated_at", $response['data']);
     }
 
+    /**
+     * Teste sem dados
+     */
     public function testEmptyData(): void
     {
         $categoryController = new CategoryController();
@@ -44,6 +50,9 @@ class InsertCategoryTest extends Test
         $this->assertArrayHasKey("name", $response['data']);
     }
 
+    /**
+     * Teste com nome existente
+     */
     public function testNameAlreadyExists(): void
     {
         $categoryController = new CategoryController();

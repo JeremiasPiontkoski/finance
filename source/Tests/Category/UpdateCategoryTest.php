@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class UpdateCategoryTest extends Test
 {
+    /**
+     * Teste com sucesso
+     */
     public function testSuccess(): void
     {
         $categoryController = new CategoryController();
@@ -28,6 +31,9 @@ class UpdateCategoryTest extends Test
         $this->assertArrayHasKey("updated_at", $response['data']);
     }
 
+    /**
+     * Teste com id como string('a')
+     */
     public function testIdAsString(): void
     {
         $categoryController = new CategoryController();
@@ -46,6 +52,9 @@ class UpdateCategoryTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
     
+    /**
+     * Teste com id inexistente
+     */
     public function testInvalidId(): void
     {
         $categoryController = new CategoryController();
@@ -64,6 +73,9 @@ class UpdateCategoryTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
 
+    /**
+     * Teste sem dados
+     */
     public function testEmptyData(): void
     {
         $categoryController = new CategoryController();
@@ -80,6 +92,9 @@ class UpdateCategoryTest extends Test
         $this->assertArrayHasKey("name", $response['data']);
     }
 
+    /**
+     * Teste com nome existente
+     */
     public function testNameAlreadyExists(): void
     {
         $categoryController = new CategoryController();
@@ -98,6 +113,9 @@ class UpdateCategoryTest extends Test
         $this->assertArrayHasKey("name", $response['data']);
     }
 
+    /**
+     * Teste com permissão negada
+     */
     public function testPermissionDenied(): void
     {
         $categoryController = new CategoryController();

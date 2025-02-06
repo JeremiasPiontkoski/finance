@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class GetByTypeTransactionTest extends Test
 {
+    /**
+     * Teste sucesso com despesa
+     */
     public function testDespesaSuccess(): void
     {
         $transactionController = new TransactionController();
@@ -20,6 +23,9 @@ class GetByTypeTransactionTest extends Test
         $this->assertArrayHasKey("data", $response);
     }
 
+    /**
+     * Teste sucesso com receita
+     */
     public function testReceitaSuccess(): void
     {
         $transactionController = new TransactionController();
@@ -34,6 +40,9 @@ class GetByTypeTransactionTest extends Test
         $this->assertArrayHasKey("data", $response);
     }
 
+    /**
+     * Teste tipo inválido
+     */
     public function testInvalidType(): void
     {
         $transactionController = new TransactionController();

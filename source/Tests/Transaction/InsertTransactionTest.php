@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class InsertTransactionTest extends Test
 {
+    /**
+     * Teste sucesso
+     */
     public function testSuccess(): void
     {
         $transactionController = new TransactionController();
@@ -34,6 +37,9 @@ class InsertTransactionTest extends Test
         $this->assertArrayHasKey("updated_at", $response['data']);
     }
 
+    /**
+     * Teste com dados vazios
+     */
     public function testEmptyData(): void
     {
         $transactionController = new TransactionController();
@@ -52,6 +58,9 @@ class InsertTransactionTest extends Test
         $this->assertArrayHasKey("amount", $response['data']);
     }
 
+    /**
+     * Teste tipo inválido
+     */
     public function testInvalidType(): void
     {
         $transactionController = new TransactionController();
@@ -73,6 +82,9 @@ class InsertTransactionTest extends Test
         $this->assertArrayHasKey("type", $response['data']);
     }
 
+    /**
+     * Teste com categoria inválida
+     */
     public function testInvalidCategory(): void
     {
         $transactionController = new TransactionController();

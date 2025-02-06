@@ -15,6 +15,7 @@ use Source\Support\Validator;
 class AuthController extends Controller
 {
     /**
+     * 
      * @OA\Post(
      *     path="/auth",
      *     summary="Login",

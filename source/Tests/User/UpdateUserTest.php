@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class UpdateUserTest extends Test
 {
+    /**
+     * Teste sucesso
+     */
     public function testSuccess(): void
     {
         $userController = new UserController();
@@ -27,6 +30,9 @@ class UpdateUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
+    /**
+     * Teste dados vazios
+     */
     public function testEmptyData(): void
     {
         $userController = new UserController();
@@ -44,6 +50,9 @@ class UpdateUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
+    /**
+     * Teste email inválido
+     */
     public function testInvalidEmail(): void
     {
         $userController = new UserController();
@@ -63,6 +72,9 @@ class UpdateUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
+    /**
+     * Teste email de outro usuário
+     */
     public function testOtherUserEmail(): void
     {
         $userController = new UserController();

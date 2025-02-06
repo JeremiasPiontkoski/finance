@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class InsertUserTest extends Test
 {
+    /**
+     * Teste sucesso
+     */
     public function testSuccess(): void
     {
         $userController = new UserController();
@@ -28,6 +31,9 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
+    /**
+     * Teste dados vazios
+     */
     public function testEmptyData(): void
     {
         $userController = new UserController();
@@ -46,6 +52,9 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("password", $response['data']);
     }
 
+    /**
+     * Teste email inválido
+     */
     public function testInvalidEmail(): void
     {
         $userController = new UserController();
@@ -66,6 +75,9 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
+    /**
+     * Teste senha inválida
+     */
     public function testInvalidPassword(): void
     {
         $userController = new UserController();
@@ -86,6 +98,9 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("password", $response['data']);
     }
 
+    /**
+     * Teste email já inserido
+     */
     public function testEmailAlreadyInserted(): void
     {
         $userController = new UserController();

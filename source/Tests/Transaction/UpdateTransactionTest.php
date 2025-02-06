@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class UpdateTransactionTest extends Test
 {
+    /**
+     * Teste sucesso
+     */
     public function testSuccess(): void
     {
         $transactionController = new TransactionController();
@@ -34,6 +37,9 @@ class UpdateTransactionTest extends Test
         $this->assertArrayHasKey("updated_at", $response['data']);
     }
 
+    /**
+     * Teste dados vazios
+     */
     public function testEmptyData(): void
     {
         $transactionController = new TransactionController();
@@ -52,6 +58,9 @@ class UpdateTransactionTest extends Test
         $this->assertArrayHasKey("amount", $response['data']);
     }
 
+    /**
+     * Teste tipo inválido
+     */
     public function testInvalidType(): void
     {
         $transactionController = new TransactionController();
@@ -73,6 +82,9 @@ class UpdateTransactionTest extends Test
         $this->assertArrayHasKey("type", $response['data']);
     }
 
+    /**
+     * Teste categoria inválida
+     */
     public function testInvalidCategory(): void
     {
         $transactionController = new TransactionController();
@@ -94,6 +106,9 @@ class UpdateTransactionTest extends Test
         $this->assertArrayHasKey("category_id", $response['data']);
     }
 
+    /**
+     * Teste id como string('a')
+     */
     public function testIdAsString(): void
     {
         $transactionController = new TransactionController();
@@ -115,6 +130,9 @@ class UpdateTransactionTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
 
+    /**
+     * Teste id inválido
+     */
     public function testInvalidId(): void
     {
         $transactionController = new TransactionController();
@@ -136,6 +154,9 @@ class UpdateTransactionTest extends Test
         $this->assertArrayHasKey("id", $response['data']);
     }
 
+    /**
+     * Teste permissão negada
+     */
     public function testPermissionDenied(): void
     {
         $transactionController = new TransactionController();

@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class GetTransactionsTest extends Test
 {
+    /**
+     * Teste sucesso
+     */
     public function testSuccess(): void
     {
         $transactionController = new TransactionController();

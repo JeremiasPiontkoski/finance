@@ -6,6 +6,9 @@ use Source\Models\Test;
 
 class GetCategoriesTest extends Test
 {
+    /**
+     * Teste com sucesso
+     */
     public function testSuccess(): void
     {
         $categoryController = new CategoryController();
