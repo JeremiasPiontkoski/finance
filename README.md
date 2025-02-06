@@ -143,3 +143,21 @@ Esta API utiliza **JWT (JSON Web Token)** para autenticação.
   ```sh
   Authorization: Bearer <TOKEN>
   ```
+
+## 🧪 Testes
+A API conta com testes automatizados utilizando a biblioteca **PHPUnit**.
+
+### Como executar os testes?
+Para rodar os testes, basta executar o seguinte comando:
+```sh
+vendor/bin/phpunit source/Tests
+```
+
+### Atenção aos dados de teste
+Para evitar erros inesperados, **não apague os seguintes registros do banco de dados**:
+- **Usuários**: ID 1 e 2
+- **Categorias**: ID 2 e 3
+- **Transações**: ID 1 e 6
+
+### Atualização dos testes
+Futuramente, os testes serão atualizados para não precisar deixar estes dados no banco.
