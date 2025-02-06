@@ -2,6 +2,7 @@
 namespace Source\Support;
 
 use DateTimeImmutable;
+use Dotenv\Dotenv;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -37,7 +38,7 @@ class JwtToken
 
         return JWT::encode(
             $data,
-            "CHAVESECRETA",
+            CONF_API_KEY,
             "HS512"
         );
     }
@@ -50,7 +51,7 @@ class JwtToken
     public static function verify (string $token) : bool
     {
         try {
-            $decoded = JWT::decode($token, new Key("CHAVESECRETA", "HS512"));
+            $decoded = JWT::decode($token, new Key(CONF_API_KEY, "HS512"));
             self::$token = $decoded;
 
             $now = new DateTimeImmutable();
