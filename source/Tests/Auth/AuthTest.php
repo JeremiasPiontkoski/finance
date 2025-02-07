@@ -11,9 +11,10 @@ class AuthTest extends Test
      */
     public function testSuccess(): void
     {
+        $this->makeUser();
         $authController = new AuthController();
         $authController->data = [
-            "email" => "jeremias@gmail.com",
+            "email" => "emailForTest@gmail.com",
             "password" => "12345678"
         ];
 
@@ -56,7 +57,7 @@ class AuthTest extends Test
     {
         $authController = new AuthController();
         $authController->data = [
-            "email" => "jeremias",
+            "email" => "emailForTest",
             "password" => "12345678"
         ];
 
@@ -76,9 +77,10 @@ class AuthTest extends Test
      */
     public function testInvalidData(): void
     {
+        $this->makeUser();
         $authController = new AuthController();
         $authController->data = [
-            "email" => "jeremias2@gmail.com",
+            "email" => "emailForTest2@gmail.com",
             "password" => "12345678"
         ];
 

@@ -6,6 +6,7 @@ use CoffeeCode\DataLayer\Connect;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Source\Controllers\AuthController;
+use Source\Controllers\UserController;
 use Source\Support\Auth;
 
 /**
@@ -43,14 +44,36 @@ class Test extends TestCase
     }
 
     /**
+     * Insere um usuário para ser usado em testes
+     * @param string $name Nome que será inserido para testes
+     * @param string $email Email que será inserido para testes
+     * @param string $password Senha que será inserida para testes
+     * @return array Retorna o array da responta da requisição
+     */
+    protected function makeUser(string $name = "nameForTest", string $email = "emailForTest@gmail.com", string $password = "12345678"): array
+    {
+        $userController = new UserController();
+        $userController->data = [
+            "name" => $name,
+            "email" => $email,
+            "password" => $password
+        ];
+        ob_start();
+        $userController->insert();
+        $response = json_decode(ob_get_clean(), true);
+        return $response;
+    }
+
+    /**
      * Gera um token de autenticação necessário para rotas privadas da aplicação
      * Salva o token gerado no atributo token da classe
      */
     private function makeToken(): void
     {
+        $this->makeUser(name: "nameForTestToken", email:"emailForTestToken@gmail.com");
         $authController = new AuthController();
         $authController->data = [
-            "email" => "jeremias@gmail.com",
+            "email" => "emailForTestToken@gmail.com",
             "password" => "12345678"
         ];
 

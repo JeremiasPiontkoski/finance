@@ -13,8 +13,8 @@ class UpdateUserTest extends Test
     {
         $userController = new UserController();
         $userController->data = [
-            "name" => "jeremias",
-            "email" => "email2@gmail.com"
+            "name" => "nameForTestUpdate",
+            "email" => "emailForTest@gmail.com"
         ];
 
         ob_start();
@@ -77,10 +77,11 @@ class UpdateUserTest extends Test
      */
     public function testOtherUserEmail(): void
     {
+        $this->makeUser(email: "emailForTest2@gmail.com");
         $userController = new UserController();
         $userController->data = [
-            "name" => "jeremias",
-            "email" => "mateus@gmail.com"
+            "name" => "nameForTest",
+            "email" => "emailForTest2@gmail.com"
         ];
 
         ob_start();

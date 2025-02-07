@@ -11,17 +11,7 @@ class InsertUserTest extends Test
      */
     public function testSuccess(): void
     {
-        $userController = new UserController();
-        $userController->data = [
-            "name" => "nameForTest",
-            "email" => "emailForTest@gmail.com",
-            "password" => "12345678"
-        ];
-
-        ob_start();
-        $userController->insert();
-        $response = json_decode(ob_get_clean(), true);
-
+        $response = $this->makeUser();
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(201, $response['statusCode']);
         $this->assertArrayHasKey("message", $response);
@@ -31,17 +21,12 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
-    /**
-     * Teste dados vazios
-     */
+    // /**
+    //  * Teste dados vazios
+    //  */
     public function testEmptyData(): void
     {
-        $userController = new UserController();
-        $userController->data = [];
-
-        ob_start();
-        $userController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeUser("", "", "");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -52,21 +37,12 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("password", $response['data']);
     }
 
-    /**
-     * Teste email inválido
-     */
+    // /**
+    //  * Teste email inválido
+    //  */
     public function testInvalidEmail(): void
     {
-        $userController = new UserController();
-        $userController->data = [
-            "name" => "nameForTest",
-            "email" => "emailForTest",
-            "password" => "123456"
-        ];
-
-        ob_start();
-        $userController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeUser(email: "emailForTest");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -75,21 +51,12 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("email", $response['data']);
     }
 
-    /**
-     * Teste senha inválida
-     */
+    // /**
+    //  * Teste senha inválida
+    //  */
     public function testInvalidPassword(): void
     {
-        $userController = new UserController();
-        $userController->data = [
-            "name" => "nameForTest",
-            "email" => "emailForTest@gmail.com",
-            "password" => "12345"
-        ];
-
-        ob_start();
-        $userController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeUser(password: "12345");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -98,28 +65,14 @@ class InsertUserTest extends Test
         $this->assertArrayHasKey("password", $response['data']);
     }
 
-    /**
-     * Teste email já inserido
-     */
+    // /**
+    //  * Teste email já inserido
+    //  */
     public function testEmailAlreadyInserted(): void
     {
-        $userController = new UserController();
-        $userData = [
-            "name" => "nameForTest",
-            "email" => "emailForTest@gmail.com",
-            "password" => "12345678"
-        ];
-
-        $userController->data = $userData;
-        ob_start();
-        $userController->insert();
-        ob_get_clean();
-
-        $userController->data = $userData;
-        ob_start();
-        $userController->insert();
-        $response = json_decode(ob_get_clean(), true);
-
+        $this->makeUser();
+        $response = $this->makeUser();
+        
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
         $this->assertArrayHasKey("message", $response);
