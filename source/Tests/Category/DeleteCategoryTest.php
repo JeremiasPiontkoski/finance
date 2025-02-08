@@ -72,8 +72,6 @@ class DeleteCategoryTest extends Test
      */
     private function deleteCategory(string $id): array
     {
-
-        $insertedCategory = $this->makeCategory();
         $categoryController = new CategoryController();
 
         ob_start();

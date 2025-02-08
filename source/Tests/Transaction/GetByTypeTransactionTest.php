@@ -11,11 +11,7 @@ class GetByTypeTransactionTest extends Test
      */
     public function testDespesaSuccess(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getByType(['type' => "despesa"]);
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->getByTypeTransactions("despesa");
 
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(200, $response['statusCode']);
@@ -28,11 +24,7 @@ class GetByTypeTransactionTest extends Test
      */
     public function testReceitaSuccess(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getByType(['type' => "receita"]);
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->getByTypeTransactions("receita");
 
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(200, $response['statusCode']);
@@ -45,16 +37,27 @@ class GetByTypeTransactionTest extends Test
      */
     public function testInvalidType(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getByType(['type' => 'teste']);
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->getByTypeTransactions("testType");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
         $this->assertArrayHasKey("message", $response);
         $this->assertArrayHasKey("data", $response);
         $this->assertArrayHasKey("type", $response['data']);
+    }
+
+    /**
+     * Método para auxiliar a classe a pegar uma transação por type
+     * @param string $type Type da transação a ser retornada
+     * @return array Retorno da requisição
+     */
+    private function getByTypeTransactions(string $type): array
+    {
+        $transactionController = new TransactionController();
+
+        ob_start();
+        $transactionController->getByType(["type" => $type]);
+        $response = json_decode(ob_get_clean(), true);
+        return $response;
     }
 }

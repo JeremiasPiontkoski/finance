@@ -11,17 +11,9 @@ class UpdateTransactionTest extends Test
      */
     public function testSuccess(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 2,
-            "type" => "despesa",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->update(['id' => 1]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->updateTransaction($insertedTransaction['data']['id'], $insertedTransaction['data']['category_id']);
 
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(200, $response['statusCode']);
@@ -42,12 +34,9 @@ class UpdateTransactionTest extends Test
      */
     public function testEmptyData(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [];
-
-        ob_start();
-        $transactionController->update(['id' => 1]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->updateTransaction($insertedTransaction['data']['id'], null, "", "", "");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -63,17 +52,9 @@ class UpdateTransactionTest extends Test
      */
     public function testInvalidType(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 2,
-            "type" => "teste diferente",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->update(['id' => 1]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->updateTransaction($insertedTransaction['data']['id'], $insertedTransaction['data']['category_id'], "testType");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -87,17 +68,9 @@ class UpdateTransactionTest extends Test
      */
     public function testInvalidCategory(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 3,
-            "type" => "receita",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->update(['id' => 1]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->updateTransaction($insertedTransaction['data']['id'], 0);
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -111,17 +84,9 @@ class UpdateTransactionTest extends Test
      */
     public function testIdAsString(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 3,
-            "type" => "receita",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->update(['id' => 'a']);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->updateTransaction("a", $insertedTransaction['data']['id']);
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -135,17 +100,9 @@ class UpdateTransactionTest extends Test
      */
     public function testInvalidId(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 3,
-            "type" => "receita",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->update(['id' => 2]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->updateTransaction(0, $insertedTransaction['data']['id']);
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -159,22 +116,38 @@ class UpdateTransactionTest extends Test
      */
     public function testPermissionDenied(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 3,
-            "type" => "receita",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->update(['id' => 6]);
-        $response = json_decode(ob_get_clean(), true);
-
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $this->makeToken("nameForTestToken2", "emailForTestToken2@gmail.com");
+        $this->generateDataAuth();
+        $response = $this->updateTransaction($insertedTransaction['data']['id'], $insertedTransaction['data']['id']);
+        
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(403, $response['statusCode']);
         $this->assertArrayHasKey("message", $response);
         $this->assertArrayHasKey("data", $response);
         $this->assertArrayHasKey("user", $response['data']);
+    }
+
+    /**
+     * Método para auxiliar a classe a atualizar dados de uma categoria para teste
+     * @param string $id Id da categoria a ser atualizada
+     * @param string $name O novo nome da categoria
+     * @return array Retorno da requisição de update
+     */
+    private function updateTransaction(string $id, string|null $category_id, string $type = "despesa", string $amount = "50.5", string $description = "testDescription"): array
+    {
+        $transactionController = new TransactionController();
+        $transactionController->data = [
+            "category_id" => $category_id,
+            "type" => $type,
+            "amount" => $amount,
+            "description" => $description
+        ];
+
+        ob_start();
+        $transactionController->update(['id' => $id]);
+        $response = json_decode(ob_get_clean(), true);
+        return $response;
     }
 }

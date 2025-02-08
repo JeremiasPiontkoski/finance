@@ -11,17 +11,8 @@ class InsertTransactionTest extends Test
      */
     public function testSuccess(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 2,
-            "type" => "despesa",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $response = $this->makeTransaction($insertedCategory['data']['id']);
 
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(201, $response['statusCode']);
@@ -42,12 +33,7 @@ class InsertTransactionTest extends Test
      */
     public function testEmptyData(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [];
-
-        ob_start();
-        $transactionController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeTransaction(0, "", "", "", "");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -63,17 +49,8 @@ class InsertTransactionTest extends Test
      */
     public function testInvalidType(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 2,
-            "type" => "teste diferente",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $response = $this->makeTransaction($insertedCategory['data']['id'], type: "testType");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -87,17 +64,7 @@ class InsertTransactionTest extends Test
      */
     public function testInvalidCategory(): void
     {
-        $transactionController = new TransactionController();
-        $transactionController->data = [
-            "category_id" => 3,
-            "type" => "receita",
-            "amount" => 50.5,
-            "description" => "Lanche"
-        ];
-
-        ob_start();
-        $transactionController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeTransaction(0);
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);

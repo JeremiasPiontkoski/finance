@@ -11,11 +11,9 @@ class GetByIdTransactionTest extends Test
      */
     public function testSuccess(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getById(['id' => 1]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $response = $this->getByIdTransaction($insertedTransaction['data']['id']);
 
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(200, $response['statusCode']);
@@ -28,11 +26,7 @@ class GetByIdTransactionTest extends Test
      */
     public function testIdAsString(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getById(['id' => 'a']);
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->getByIdTransaction('a');
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -46,11 +40,7 @@ class GetByIdTransactionTest extends Test
      */
     public function testInvalidId(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getById(['id' => 2]);
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->getByIdTransaction(0);
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -64,16 +54,31 @@ class GetByIdTransactionTest extends Test
      */
     public function testPermissionDenied(): void
     {
-        $transactionController = new TransactionController();
-
-        ob_start();
-        $transactionController->getById(['id' => 6]);
-        $response = json_decode(ob_get_clean(), true);
+        $insertedCategory = $this->makeCategory();
+        $insertedTransaction = $this->makeTransaction($insertedCategory['data']['id']);
+        $this->makeToken("nameForTestToken2", "emailForTestToken2@gmail.com");
+        $this->generateDataAuth();
+        $response = $this->getByIdTransaction($insertedTransaction['data']['id']);
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(403, $response['statusCode']);
         $this->assertArrayHasKey("message", $response);
         $this->assertArrayHasKey("data", $response);
         $this->assertArrayHasKey("user", $response['data']);
+    }
+
+    /**
+     * Método para auxiliar a classe a pegar uma transação por id
+     * @param string $id Id da transação a ser retornada
+     * @return array Retorno da requisição
+     */
+    private function getByIdTransaction(string $id): array
+    {
+        $transactionController = new TransactionController();
+
+        ob_start();
+        $transactionController->getById(["id" => $id]);
+        $response = json_decode(ob_get_clean(), true);
+        return $response;
     }
 }

@@ -7,6 +7,7 @@ use PDO;
 use PHPUnit\Framework\TestCase;
 use Source\Controllers\AuthController;
 use Source\Controllers\CategoryController;
+use Source\Controllers\TransactionController;
 use Source\Controllers\UserController;
 use Source\Support\Auth;
 
@@ -80,6 +81,27 @@ class Test extends TestCase
 
         ob_start();
         $categoryController->insert();
+        $response = json_decode(ob_get_clean(), true);
+        return $response;
+    }
+
+    /**
+     * Cria uma nova transação para testes
+     * @param string $name Nome da nova categoria
+     * @return array Retorna os dados da requisição
+     */
+    protected function makeTransaction(string $category_id, string $type = "despesa", string $amount = "50.5", string $description = "testDescription"): array
+    {
+        $transactionController = new TransactionController();
+        $transactionController->data = [
+            "category_id" => $category_id,
+            "type" => $type,
+            "amount" => $amount,
+            "description" => $description
+        ];
+
+        ob_start();
+        $transactionController->insert();
         $response = json_decode(ob_get_clean(), true);
         return $response;
     }
