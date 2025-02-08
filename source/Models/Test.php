@@ -6,6 +6,7 @@ use CoffeeCode\DataLayer\Connect;
 use PDO;
 use PHPUnit\Framework\TestCase;
 use Source\Controllers\AuthController;
+use Source\Controllers\CategoryController;
 use Source\Controllers\UserController;
 use Source\Support\Auth;
 
@@ -58,8 +59,27 @@ class Test extends TestCase
             "email" => $email,
             "password" => $password
         ];
+
         ob_start();
         $userController->insert();
+        $response = json_decode(ob_get_clean(), true);
+        return $response;
+    }
+
+    /**
+     * Cria uma nova categoria para testes
+     * @param string $name Nome da nova categoria
+     * @return array Retorna os dados da requisição
+     */
+    protected function makeCategory(string $name = "nameCategoryForTest"): array
+    {
+        $categoryController = new CategoryController();
+        $categoryController->data = [
+            "name" => $name
+        ];
+
+        ob_start();
+        $categoryController->insert();
         $response = json_decode(ob_get_clean(), true);
         return $response;
     }
@@ -68,12 +88,12 @@ class Test extends TestCase
      * Gera um token de autenticação necessário para rotas privadas da aplicação
      * Salva o token gerado no atributo token da classe
      */
-    private function makeToken(): void
+    protected function makeToken(string $name = "nameForTestToken", string $email = "emailForTestToken@gmail.com"): void
     {
-        $this->makeUser(name: "nameForTestToken", email:"emailForTestToken@gmail.com");
+        $this->makeUser(name: $name, email: $email);
         $authController = new AuthController();
         $authController->data = [
-            "email" => "emailForTestToken@gmail.com",
+            "email" => $email,
             "password" => "12345678"
         ];
 
@@ -87,7 +107,7 @@ class Test extends TestCase
     /**
      * Este método irá pegar o valor do atributo token da classe e irá gerar os dados com base no token para realizar testes com autenticação necessária
      */
-    private function generateDataAuth(): void
+    protected function generateDataAuth(): void
     {
         Auth::validateToken($this->token);
     }

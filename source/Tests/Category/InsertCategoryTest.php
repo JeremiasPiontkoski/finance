@@ -11,14 +11,7 @@ class InsertCategoryTest extends Test
      */
     public function testSuccess(): void
     {
-        $categoryController = new CategoryController();
-        $categoryController->data = [
-            "name" => "Conta Internet"
-        ];
-
-        ob_start();
-        $categoryController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeCategory();
 
         $this->assertEquals("success", $response['status']);
         $this->assertEquals(201, $response['statusCode']);
@@ -36,12 +29,7 @@ class InsertCategoryTest extends Test
      */
     public function testEmptyData(): void
     {
-        $categoryController = new CategoryController();
-        $categoryController->data = [];
-
-        ob_start();
-        $categoryController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $response = $this->makeCategory("");
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
@@ -55,14 +43,8 @@ class InsertCategoryTest extends Test
      */
     public function testNameAlreadyExists(): void
     {
-        $categoryController = new CategoryController();
-        $categoryController->data = [
-            "name" => "Conta Água"
-        ];
-
-        ob_start();
-        $categoryController->insert();
-        $response = json_decode(ob_get_clean(), true);
+        $this->makeCategory();
+        $response = $this->makeCategory();
 
         $this->assertEquals("error", $response['status']);
         $this->assertEquals(400, $response['statusCode']);
